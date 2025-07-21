@@ -2,7 +2,6 @@ import { Task } from "/Task.js";
 
 
 const input = document.getElementById("inputTask");
-const editButton = document.getElementById("`editButton");
 const taskList =  document.getElementById("taskList");
 
 const tasks = [];
@@ -14,11 +13,26 @@ function addTask(){
   const newTask = new Task(1, title, false);
   tasks.push(newTask);
 
+  const taskLIst =  document.getElementById("taskList");
+  const li = document.createElement("li");
+  li.className = "task-item";
+  li.textContent = title;
+
+  li.style.opacity = 0;
+  li.style.transform = "translateY(-10px)";
+  li.style.transition = "all 0.4s ease";
+
+  taskList.appendChild(li);
+
+  requestAnimationFrame(() => {
+    li.style.opacity = 1;
+    li.style.transform = "translateY(0)";
+  })
+
+  taskList.style.maxHeight = taskList.scrollHeight + "px";
   refreshList();
   input.value = "";
-
 }
-
 
 function refreshList(){
   taskList.innerHTML = '';
@@ -48,7 +62,6 @@ function refreshList(){
         }
       });
 
-
       input.addEventListener('blur', () => {
         task.title = input.value.trim();
         refreshList();
@@ -60,9 +73,11 @@ function refreshList(){
 }
 
 
+
 input.addEventListener('keydown', function(event){
   if(event.key === 'Enter'){
     addTask();
+
   }
 });
 
